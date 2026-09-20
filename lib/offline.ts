@@ -127,7 +127,34 @@ async function queueFor(owner: string): Promise<QueueRecord[]> {
   return records.filter(record => record.owner === owner).sort((a, b) => a.createdAt - b.createdAt);
 }
 
-export async function flushQueue(owner: string, send: (body: QueueBody) => Promise<unknown>): Promise<{ sent: number; conflicts: number; remaining: number }> {
+export async function saveReviewLocally(owner: string, body: QueueBody, deckId: string, cards: Card[], dashboard: OfflineDashboard): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction([QUEUE, CARDS, DASHBOARDS], 'readwrite');
+    const now = Date.now();
+    transaction.oncomplete = () => { db.close(); resolve(); };
+    transaction.onabort = () => { db.close(); reject(transaction.error ?? unavailable()); };
+    try {
+      transaction.objectStore(QUEUE).put({id: body.eventId, owner, body, createdAt: now});
+      transaction.objectStore(CARDS).put({key: `${owner}:${deckId}`, owner, deckId, cards, savedAt: now});
+      transaction.objectStore(DASHBOARDS).put({key: 'active', owner, value: dashboard, savedAt: now});
+    } catch (error) {
+      transaction.onabort = () => { db.close(); reject(error); };
+      transaction.abort();
+    }
+  });
+}
+
+type SyncResult = { sent: number; conflicts: number; remaining: number };
+const syncing = new Map<string, Promise<SyncResult>>();
+export function flushQueue(owner: string, send: (body: QueueBody) => Promise<unknown>): Promise<SyncResult> {
+  const existing = syncing.get(owner);
+  if (existing) return existing;
+  const task = drainQueue(owner, send).finally(() => syncing.delete(owner));
+  syncing.set(owner, task);
+  return task;
+}
+async function drainQueue(owner: string, send: (body: QueueBody) => Promise<unknown>): Promise<SyncResult> {
   const records = await queueFor(owner);
   let sent = 0;
   let conflicts = 0;
@@ -146,5 +173,10 @@ export async function flushQueue(owner: string, send: (body: QueueBody) => Promi
       break;
     }
   }
-  return { sent, conflicts, remaining: await queueCount(owner) };
+  const remaining = await queueCount(owner);
+  if (remaining && sent + conflicts === records.length && records.length) {
+    const next = await drainQueue(owner, send);
+    return {sent: sent + next.sent, conflicts: conflicts + next.conflicts, remaining: next.remaining};
+  }
+  return { sent, conflicts, remaining };
 }

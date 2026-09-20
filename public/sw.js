@@ -1,4 +1,4 @@
-const CACHE = 'newanki-shell-v4';
+const CACHE = 'newanki-shell-v5';
 const OFFLINE = '/offline.html';
 const SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/icon-192.png', '/icon-512.png', OFFLINE];
 
