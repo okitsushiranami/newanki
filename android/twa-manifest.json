@@ -1,0 +1,51 @@
+{
+  "packageId": "jp.sushisyonen.newanki",
+  "host": "newanki-study-sushi.sushisyo-nen.chatgpt.site",
+  "name": "newanki",
+  "launcherName": "newanki",
+  "display": "standalone",
+  "themeColor": "#245CE5",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#F4F6FA",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://newanki-study-sushi.sushisyo-nen.chatgpt.site/icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "../.signing/newanki-release.jks",
+    "alias": "newanki"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://newanki-study-sushi.sushisyo-nen.chatgpt.site/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://newanki-study-sushi.sushisyo-nen.chatgpt.site/",
+  "minSdkVersion": 26,
+  "orientation": "any",
+  "fingerprints": [
+    {
+      "name": "newanki release",
+      "value": "5B:96:CB:0B:05:97:23:65:6C:6F:E4:11:39:35:F2:55:69:7E:FF:26:6E:D2:02:54:35:02:62:6A:DC:33:D6:E1"
+    }
+  ],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "displayOverride": [],
+  "appVersion": "1.0.0"
+}

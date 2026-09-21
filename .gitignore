@@ -45,3 +45,10 @@ next-env.d.ts
 /.codex/
 /outputs/
 /work/
+/.signing/
+/android/.gradle/
+/android/build/
+/android/app/build/
+/android/*.apk
+/android/*.aab
+/android/*.idsig

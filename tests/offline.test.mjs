@@ -1,12 +1,14 @@
 import 'fake-indexeddb/auto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {saveReviewLocally,loadCards,loadDashboard,queueCount,flushQueue} from '../lib/offline.ts';
+import {cachedDeckCount,saveReviewLocally,loadCards,loadDashboard,queueCount,flushQueue} from '../lib/offline.ts';
 
 test('local commit persists history and card before network, and retries the same event',async()=>{
  const owner='local-test',card={id:'c1',version:2},dashboard={user:{email:owner},summary:{count:1}};
  await saveReviewLocally(owner,{eventId:'e1'},'d1',[card],dashboard);
  assert.deepEqual(await loadCards(owner,'d1'),[card]);
+ assert.equal(await cachedDeckCount(owner),1);
+ assert.equal(await cachedDeckCount('another-owner'),0);
  assert.deepEqual(await loadDashboard(),dashboard);
  assert.equal(await queueCount(owner),1);
  await flushQueue(owner,async()=>{throw new Error('offline')});

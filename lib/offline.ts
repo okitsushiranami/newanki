@@ -107,6 +107,12 @@ export async function loadCards(owner: string | undefined, deckId: string): Prom
   return record?.cards ?? null;
 }
 
+export async function cachedDeckCount(owner?: string): Promise<number> {
+  if (!owner) return 0;
+  const records = await readAll<CardsRecord>(CARDS);
+  return records.filter(record => record.owner === owner).length;
+}
+
 export async function enqueue(owner: string, body: QueueBody): Promise<string> {
   const id = typeof body.eventId === 'string'
     ? body.eventId

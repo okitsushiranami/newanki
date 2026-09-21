@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "jp.sushisyonen.newanki",
+      "sha256_cert_fingerprints": [
+        "5B:96:CB:0B:05:97:23:65:6C:6F:E4:11:39:35:F2:55:69:7E:FF:26:6E:D2:02:54:35:02:62:6A:DC:33:D6:E1"
+      ]
+    }
+  }
+]

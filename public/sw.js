@@ -1,10 +1,13 @@
-const CACHE = 'newanki-shell-v5';
+const CACHE = 'newanki-shell-v6';
 const OFFLINE = '/offline.html';
 const SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/icon-192.png', '/icon-512.png', OFFLINE];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));
-  self.skipWaiting();
+});
+
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
