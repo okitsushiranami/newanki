@@ -77,7 +77,7 @@ export default function StudyPlayer({cards,name,setSize,busy,onReview,onExit,onF
      const dx=event.clientX-start.x,dy=event.clientY-start.y;
      const swiped=Math.abs(dx)>Math.abs(dy)*1.5&&(Math.abs(dx)>72||(Math.abs(dx)>28&&Math.abs(dx)/Math.max(1,performance.now()-start.at)>.5));
      if(Math.abs(dx)>8||Math.abs(dy)>8)suppressClick.current=true;
-     resetDrag();if(swiped&&revealed&&!reviewing)void rate(dx>0?'good':'again');
+     resetDrag();if(swiped&&revealed&&!reviewing){if(typeof navigator.vibrate==='function')navigator.vibrate(10);void rate(dx>0?'good':'again')}
     }}
     onPointerCancel={()=>{touch.current=null;suppressClick.current=true;resetDrag()}}
     onLostPointerCapture={()=>{touch.current=null;resetDrag()}}>
