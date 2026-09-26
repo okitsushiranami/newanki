@@ -68,9 +68,11 @@ export default function StudyPlayer({cards,name,setSize,busy,onReview,onExit,onF
      start.dx=event.clientX-start.x;start.dy=event.clientY-start.y;
      if(Math.abs(start.dx)>8||Math.abs(start.dy)>8)suppressClick.current=true;
      if(!revealed||reviewing||Math.abs(start.dy)>Math.abs(start.dx))return;
-     const dx=Math.max(-160,Math.min(160,start.dx));
+     const maxOffset=Math.min(window.innerWidth*.9,480);
+     const dx=Math.sign(start.dx)*Math.min(Math.abs(start.dx)*1.8,maxOffset);
      event.currentTarget.dataset.dragging='true';event.currentTarget.dataset.direction=dx>0?'good':'again';
-     event.currentTarget.style.transform=`translate3d(${dx}px,0,0) rotate(${dx/30}deg)`;
+     const rotation=Math.max(-14,Math.min(14,dx/24));
+     event.currentTarget.style.transform=`translate3d(${dx}px,0,0) rotate(${rotation}deg)`;
     }}
     onPointerUp={event=>{
      const start=touch.current;touch.current=null;if(!start)return;
