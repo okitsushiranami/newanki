@@ -84,7 +84,7 @@ export default function StudyPlayer({cards,name,setSize,busy,onReview,onExit,onF
     onPointerCancel={()=>{touch.current=null;suppressClick.current=true;resetDrag()}}
     onLostPointerCapture={()=>{touch.current=null;resetDrag()}}>
     <span className="swipe-feedback" aria-hidden="true"><span>← 難しい</span><span>わかった →</span></span>
-    <span className="eyebrow">{revealed?'QUESTION & ANSWER':'QUESTION'}</span><div className="question">{card.front}</div>
+    <span className="eyebrow">{revealed?'QUESTION & ANSWER':'QUESTION'}</span><div key={state.cursor} className="question word-enter">{card.front}</div>
     {revealed&&<><div className="answer">{card.back}</div>{card.note&&<p className="hint">{card.note}</p>}</>}
     <button className={revealed?'secondary':'primary'} disabled={disabled} aria-expanded={revealed} onClick={toggle}>{revealed?'答えを隠す':'答えを見る'}</button>
     {!revealed&&<><button className="text-button" disabled={disabled} onClick={()=>setHint(true)}>最初の1文字をヒントに</button>{hint&&<p className="hint">{Array.from(card.back)[0]}…</p>}</>}
